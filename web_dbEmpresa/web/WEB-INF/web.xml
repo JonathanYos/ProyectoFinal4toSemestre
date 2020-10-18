@@ -40,6 +40,10 @@
         <servlet-name>sr_detalle_venta</servlet-name>
         <servlet-class>controlador.sr_detalle_venta</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>sr_inicioSesion</servlet-name>
+        <servlet-class>controlador.sr_inicioSesion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>sr_puesto</servlet-name>
         <url-pattern>/sr_puesto</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>sr_detalle_venta</servlet-name>
         <url-pattern>/sr_detalle_venta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sr_inicioSesion</servlet-name>
+        <url-pattern>/sr_inicioSesion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
