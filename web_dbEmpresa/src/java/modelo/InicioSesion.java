@@ -130,5 +130,26 @@ public class InicioSesion {
         }
         return tabla;
     }
+    public String LinkImage() {
+        String resultado = "";
+
+        try {
+
+            cn = new Conexion();
+            cn.abrir_conexion();
+
+            String query = "SELECT LinkImage resultado FROM users WHERE Usuario='" + usuario + "'";
+            ResultSet consulta = cn.conexionDB.createStatement().executeQuery(query);
+
+            while (consulta.next()) {
+                resultado = consulta.getString("resultado");
+            }
+            cn.cerrar_conexion();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            resultado = "";
+        }
+        return resultado;
+    }
 
 }

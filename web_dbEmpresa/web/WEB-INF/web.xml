@@ -44,6 +44,10 @@
         <servlet-name>sr_inicioSesion</servlet-name>
         <servlet-class>controlador.sr_inicioSesion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>sr_cerrarSesion</servlet-name>
+        <servlet-class>controlador.sr_cerrarSesion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>sr_puesto</servlet-name>
         <url-pattern>/sr_puesto</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>sr_inicioSesion</servlet-name>
         <url-pattern>/sr_inicioSesion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sr_cerrarSesion</servlet-name>
+        <url-pattern>/sr_cerrarSesion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
