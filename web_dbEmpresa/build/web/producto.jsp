@@ -15,6 +15,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Empleados</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <script type="text/javascript">    
+    function imagen(elemento){
+     var file = elemento.files[0]; 
+    var objHidden = document.datos.nombreimagen;
+    objHidden.value = file.name;
+};</script>
     </head>
     <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -23,9 +29,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-md-center" id="menu">
-
-                <ul class="navbar-nav mr-auto">
-                    <%
+            <ul class="navbar-nav mr-auto">
+                
+    <!--añadir codigo-->  
+           <%
                         HttpSession s = request.getSession();
                         //Acceder a Session
                         if ((String) s.getAttribute("U") == null || (int) s.getAttribute("R") < 1) {
@@ -91,6 +98,7 @@
                         }
 
                     %>
+    
                     <li class='nav-item dropdown'>
                         <a class='nav-link' href='sr_cerrarSesion'>Cerrar Sesion</a>
                     </li>
@@ -99,7 +107,7 @@
         </nav>
         <div>
 
-            <div class="modal fade" id="modal_producto" role="dialog">
+            <div class="modal fade" id="modal_producto" role="dialog" >
                 <div class="modal-dialog">
 
                     <!-- Modal content-->
@@ -109,7 +117,7 @@
                         </div>
                         <div class="modal-body">
 
-                            <form class="form-group col-auto" action="sr_producto" method="post">
+                            <form class="form-group col-auto" action="sr_producto" method="post" name="datos" enctype="multipart/form-data">
                                 <div class="form-group col-auto">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -151,7 +159,8 @@
                                         <div class="input-group-prepend">
                                             <label class="input-group-text" for="lbl_imagen">Imagen</label>
                                         </div>
-                                        <input type="text" name="txt_imagen" id="txt_imagen" class="form-control" placeholder="ej. ruta imagen" required> 
+                                        <input type="file" name="txt_imagen" id="txt_imagen" class="form-control" placeholder="ej. ruta imagen" onchange="imagen(this)" > 
+                                        <input type="hidden" name="nombreimagen" id="file" class="reserva">
                                     </div>
 
                                     <div class="input-group mb-3">
@@ -210,11 +219,11 @@
                         DefaultTableModel tabla = new DefaultTableModel();
                         tabla = producto.leer();
                         for (int t = 0; t < tabla.getRowCount(); t++) {
-                            out.println("<tr data-id=" + tabla.getValueAt(t, 0) + " data-id_m=" + tabla.getValueAt(t, 2) + ">");
+                            out.println("<tr data-id=" + tabla.getValueAt(t, 0) + " data-id_m=" + tabla.getValueAt(t, 2) +" data-idi="+ tabla.getValueAt(t, 4) + ">");
                             out.println("<td>" + tabla.getValueAt(t, 1) + "</td>");
                             out.println("<td>" + tabla.getValueAt(t, 9) + "</td>");
                             out.println("<td>" + tabla.getValueAt(t, 3) + "</td>");
-                            out.println("<td>" + tabla.getValueAt(t, 4) + "</td>");
+                            out.println("<td><img src='img/" + tabla.getValueAt(t, 4) + "' style='max-width:100px;max-height:100px;border-radius:2.4em'></td>");
                             out.println("<td>" + tabla.getValueAt(t, 5) + "</td>");
                             out.println("<td>" + tabla.getValueAt(t, 6) + "</td>");
                             out.println("<td>" + tabla.getValueAt(t, 7) + "</td>");
@@ -244,14 +253,15 @@
                 }
 
                 $('#tbl_productos').on('click', 'tr td', function (evt) {
-                    var target, id, id_m, producto, descripcion, imagen, p_costo, p_venta, existencia;
+                    var target, id, id_m, producto, descripcion, imagen, p_costo, p_venta, existencia,idi;
 
                     target = $(event.target);
                     id = target.parent().data('id');
                     id_m = target.parent().data('id_m');
+                    idi = target.parent().data('idi');
                     producto = target.parents("tr").find("td").eq(0).html();
                     descripcion = target.parents("tr").find("td").eq(2).html();
-                    imagen = target.parents("tr").find("td").eq(3).html();
+                   
                     p_costo = target.parents("tr").find("td").eq(4).html();
                     p_venta = target.parents("tr").find("td").eq(5).html();
                     existencia = target.parents("tr").find("td").eq(6).html();
@@ -260,7 +270,7 @@
                     $("#txt_producto").val(producto);
                     $("#drop_list").val(id_m);
                     $("#txt_descripcion").val(descripcion);
-                    $("#txt_imagen").val(imagen);
+                    $(".reserva").val(idi);
                     $("#txt_pcosto").val(p_costo);
                     $("#txt_pventa").val(p_venta);
                     $("#txt_existencia").val(existencia);

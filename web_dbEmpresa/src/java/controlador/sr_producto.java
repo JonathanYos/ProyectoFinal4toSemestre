@@ -5,18 +5,24 @@
  */
 package controlador;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import modelo.Producto;
 
 /**
  *
  * @author jarno
  */
+@MultipartConfig
 public class sr_producto extends HttpServlet {
 
     /**
@@ -40,9 +46,21 @@ public class sr_producto extends HttpServlet {
             out.println("<title>Servlet sr_producto</title>");            
             out.println("</head>");
             out.println("<body>");
-           producto = new Producto(Integer.valueOf(request.getParameter("txt_id")), Integer.valueOf(request.getParameter("drop_marca")), Integer.valueOf(request.getParameter("txt_existencia")), request.getParameter("txt_producto"), request.getParameter("txt_descripcion"), request.getParameter("txt_imagen"), request.getParameter("txt_fecha_ingreso"), Float.valueOf(request.getParameter("txt_pcosto")), Float.valueOf(request.getParameter("txt_pventa")));             
+           producto = new Producto(Integer.valueOf(request.getParameter("txt_id")), Integer.valueOf(request.getParameter("drop_marca")), Integer.valueOf(request.getParameter("txt_existencia")), request.getParameter("txt_producto"), request.getParameter("txt_descripcion"), request.getParameter("nombreimagen"), request.getParameter("txt_fecha_ingreso"), Float.valueOf(request.getParameter("txt_pcosto")), Float.valueOf(request.getParameter("txt_pventa")));             
             if("Agregar".equals(request.getParameter("btn_agregar"))){
                 if(producto.agregar() > 0){
+                       Part archivo = request.getPart("txt_imagen");
+                    InputStream p = archivo.getInputStream();
+                    File file = new File("C:\\Users\\JonathanY\\Desktop\\Final Jsp\\web_dbEmpresa\\web\\img\\"+request.getParameter("nombreimagen"));
+                    FileOutputStream o = new FileOutputStream(file);
+                    
+                    int data = p.read();
+                    while (data != -1) {
+                        o.write(data);
+                        data = p.read();
+                    }
+                    o.close();
+                    p.close();
                     response.sendRedirect("producto.jsp");
                 }else{
                     out.println("<h1>Error al ingresar</h1>");
@@ -51,7 +69,20 @@ public class sr_producto extends HttpServlet {
             }
             
             if("Modificar".equals(request.getParameter("btn_modificar"))){
+                   Part archivo = request.getPart("txt_imagen");
+                    InputStream p = archivo.getInputStream();
+                    File file = new File("C:\\Users\\JonathanY\\Desktop\\Final Jsp\\web_dbEmpresa\\web\\img\\"+request.getParameter("nombreimagen"));
+                    FileOutputStream o = new FileOutputStream(file);
+                    
+                    int data = p.read();
+                    while (data != -1) {
+                        o.write(data);
+                        data = p.read();
+                    }
+                    o.close();
+                    p.close();
                 if(producto.modificar() > 0){
+                     
                     response.sendRedirect("producto.jsp");
                 }else{
                     out.println("<h1>Error al modificar</h1>");
