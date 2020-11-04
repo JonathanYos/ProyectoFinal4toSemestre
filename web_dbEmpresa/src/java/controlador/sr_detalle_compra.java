@@ -7,10 +7,12 @@ package controlador;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modelo.Compra_Detalle;
 
 /**
@@ -43,7 +45,9 @@ public class sr_detalle_compra extends HttpServlet {
             cdetalle = new Compra_Detalle(Integer.valueOf(request.getParameter("txt_id_cdetalle")), Integer.valueOf(request.getParameter("drop_compra")), Integer.valueOf(request.getParameter("drop_producto")), Integer.valueOf(request.getParameter("txt_cantidad")), Float.valueOf(request.getParameter("txt_precio_costo_unitario")));             
             if("Agregar".equals(request.getParameter("btn_agregar"))){
                 if(cdetalle.agregar() > 0){
-                    response.sendRedirect("detalle_maestro_compra.jsp");
+                    HttpSession s = request.getSession();
+                    s.setAttribute("Co",request.getParameter("txt_id_cdetalle"));
+                    response.sendRedirect("Detalle-compras.jsp");
                 }else{
                     out.println("<h1>Error al ingresar</h1>");
                     out.println("<a href='detalle_maestro_compra.jsp'>Regresar</a>");

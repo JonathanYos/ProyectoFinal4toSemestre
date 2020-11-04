@@ -73,25 +73,18 @@ public DefaultTableModel leer(){
  try{
      cn = new Conexion();
      cn.abrir_conexion();
-      String query = "SELECT d.idcompra_detalle as id,c.idcompra,p.idproducto,d.cantidad,d.precio_costo_unitario,c.no_orden_compra,e.idProveedor,c.fecha_orden,c.fecha_ingreso,p.producto,e.proveedor FROM compras_detalle as d inner join compras as c on d.idcompra = c.idcompra inner join productos as p on d.idproducto = p.idproducto inner join proveedores as e on c.idProveedor = e.idProveedor;";
+      String query = "SELECT compras.idcompra, compras.no_orden_compra, compras.idProveedor, compras.fecha_orden, compras.fecha_incgreso FROM dbempresa.compras;";
       ResultSet consulta = cn.conexionDB.createStatement().executeQuery(query);
-      String encabezado[] = {"id","idcompra","idproducto","cantidad","precio_costo_unitario","no_orden_compra","idProveedor","fecha_orden","fecha_ingreso","producto","proveedor"};
+      String encabezado[] = {"idcompra","no_orden_compra","idProveedor","fecha_orden","fecha_incgreso"};
       tabla.setColumnIdentifiers(encabezado);
       String datos[] = new String[11];
       while (consulta.next()){
-          datos[0] = consulta.getString("id");
-          datos[1] = consulta.getString("idcompra");
-          datos[2] = consulta.getString("idproducto");
-          datos[3] = consulta.getString("cantidad");
-          datos[4] = consulta.getString("precio_costo_unitario");
-          datos[5] = consulta.getString("no_orden_compra");
-          datos[6] = consulta.getString("idProveedor");
-          datos[7] = consulta.getString("fecha_orden");
-          datos[8] = consulta.getString("fecha_ingreso");
-          datos[9] = consulta.getString("producto");
-          datos[10] = consulta.getString("proveedor");
-          tabla.addRow(datos);
-      
+          datos[0] = consulta.getString("idcompra");
+          datos[1] = consulta.getString("no_orden_compra");
+          datos[2] = consulta.getString("idProveedor");
+          datos[3] = consulta.getString("fecha_orden");
+          datos[4] = consulta.getString("fecha_incgreso");
+          tabla.addRow(datos); 
       }
       
      cn.cerrar_conexion();
@@ -115,6 +108,7 @@ public DefaultTableModel leer(){
             parametro.setFloat(4, this.getPrecio_costo_unitario());
             retorno = parametro.executeUpdate();
             cn.cerrar_conexion();
+            
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
             retorno = 0;
